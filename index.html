@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GBA Emulator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #screen-container {
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 3 / 2;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+        #controls {
+            flex: 1;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            background: #222;
+            display: grid;
+            grid-template-areas: 
+                "L . R"
+                "dpad . buttons"
+                "start . select";
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            cursor: pointer;
+            box-shadow: 0 4px #111;
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px #111;
+        }
+        #dpad {
+            grid-area: dpad;
+            display: grid;
+            grid-template-columns: repeat(3, 40px);
+            grid-template-rows: repeat(3, 40px);
+        }
+        .d { background: #333; width: 40px; height: 40px; }
+        #buttons {
+            grid-area: buttons;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-btn {
+            width: 60px;
+            height: 60px;
+            background: #a00;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .shoulder-btn {
+            width: 80px;
+            height: 30px;
+            border-radius: 5px;
+            background: #555;
+        }
+        #l-btn { grid-area: L; justify-self: start; }
+        #r-btn { grid-area: R; justify-self: end; }
+        #start-btn { grid-area: start; width: 60px; height: 20px; border-radius: 10px; font-size: 10px; margin-top: 20px;}
+        #select-btn { grid-area: select; width: 60px; height: 20px; border-radius: 10px; font-size: 10px; margin-top: 20px; justify-self: end;}
+
+        #file-input-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="screen-container">
+        <label id="file-input-label" for="file-input">Load ROM</label>
+        <input type="file" id="file-input" style="display:none" accept=".gba">
+        <canvas id="screen"></canvas>
+    </div>
+    <div id="controls">
+        <div id="l-btn" class="btn shoulder-btn">L</div>
+        <div id="r-btn" class="btn shoulder-btn">R</div>
+        
+        <div id="dpad">
+            <div></div><div class="btn d" id="up">U</div><div></div>
+            <div class="btn d" id="left">L</div><div class="d"></div><div class="btn d" id="right">R</div>
+            <div></div><div class="btn d" id="down">D</div><div></div>
+        </div>
+
+        <div id="buttons">
+            <div class="btn action-btn" id="b-btn">B</div>
+            <div class="btn action-btn" id="a-btn">A</div>
+        </div>
+
+        <div id="start-btn" class="btn">START</div>
+        <div id="select-btn" class="btn">SELECT</div>
+    </div>
+
+    <script type="module">
+        // Placeholder for emulator logic initialization
+        // This would import the WASM core from gbajs3
+        console.log("GBA Emulator UI Initialized");
+        
+        const canvas = document.getElementById('screen');
+        const ctx = canvas.getContext('2d');
+        
+        // Simple canvas splash
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.fillText('Load a GBA ROM to start', canvas.width / 2, canvas.height / 2);
+
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                alert('Emulator core loading placeholder. ROM selected: ' + file.name);
+            }
+        });
+
+        // Touch control handlers
+        const buttons = ['up', 'down', 'left', 'right', 'a-btn', 'b-btn', 'l-btn', 'r-btn', 'start-btn', 'select-btn'];
+        buttons.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('touchstart', (e) => { e.preventDefault(); console.log('Press:', id); });
+            el.addEventListener('touchend', (e) => { e.preventDefault(); console.log('Release:', id); });
+        });
+    </script>
+</body>
+</html>
